@@ -319,15 +319,17 @@
 // /app/dashboard/page.js
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
-import { logout, setUserOnLogin } from '@/store/features/auth/authSlice';
+// ** Import path ko theek kiya gaya **
+import { logout, setUserOnLogin } from '../../store/features/auth/authSlice';
 import { LoaderCircle } from 'lucide-react';
 
-import Sidebar from '@/components/Sidebar.jsx';
-import ChatWindow from '@/components/ChatWindow.jsx';
-import ConfirmModal from '@/components/ConfirmModal.jsx'; // Naya modal import karein
+// ** Import path ko theek kiya gaya **
+import Sidebar from '../../components/Sidebar.jsx';
+import ChatWindow from '../../components/ChatWindow.jsx';
+import ConfirmModal from '../../components/ConfirmModal.jsx';
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useSelector((state) => state.auth);
@@ -336,7 +338,6 @@ export default function DashboardPage() {
 
   const [chatSessions, setChatSessions] = useState([]);
   const [currentSessionId, setCurrentSessionId] = useState(null);
-  // ** THE CHANGE IS HERE: Missing '=' sign added **
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -345,12 +346,8 @@ export default function DashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const chatContainerRef = useRef(null);
 
-  // Modal ke liye nayi state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sessionToDelete, setSessionToDelete] = useState(null);
-
-  useEffect(() => { if (!authLoading && !user) router.push('/login'); }, [user, authLoading, router]);
-  useEffect(() => { if (user) fetchSessions(); }, [user]);
 
   const sortSessions = (sessions) => {
     return [...sessions].sort((a, b) => {
@@ -360,7 +357,7 @@ export default function DashboardPage() {
     });
   };
 
-  const fetchSessions = async () => {
+  const fetchSessions = useCallback(async () => {
     setSessionsLoading(true);
     try {
       const res = await fetch('/api/sessions');
@@ -369,7 +366,10 @@ export default function DashboardPage() {
       setChatSessions(sortSessions(data));
     } catch (error) { console.error('Error fetching sessions:', error); } 
     finally { setSessionsLoading(false); }
-  };
+  }, []);
+
+  useEffect(() => { if (!authLoading && !user) router.push('/login'); }, [user, authLoading, router]);
+  useEffect(() => { if (user) fetchSessions(); }, [user, fetchSessions]);
 
   const handleLogout = async () => {
     try {

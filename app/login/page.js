@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { setUserOnLogin } from '@/store/features/auth/authSlice'; // **Import the new action**
+// ** THE CHANGE IS HERE: Import path ko theek kiya gaya **
+import { setUserOnLogin } from '../../store/features/auth/authSlice';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const dispatch = useDispatch(); // **Get the dispatch function**
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,10 +31,7 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // **THE CHANGE:**
-        // 1. Dispatch the action to immediately update the Redux store
         dispatch(setUserOnLogin(data.user));
-        // 2. Now, redirect to the dashboard
         router.push('/dashboard');
       } else {
         setError(data.message || 'Login failed.');
@@ -70,7 +68,7 @@ export default function LoginPage() {
           </div>
         </form>
         <div className="text-sm text-center text-gray-400">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/signup" className="font-medium text-blue-400 hover:underline">Sign up</Link>
         </div>
       </div>
