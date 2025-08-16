@@ -24,3 +24,71 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+
+
+/* ** Yahan se naya code add karein ** */
+/* Add this code to the bottom of your globals.css file */
+
+/* This will add spacing and better styling to the Markdown content */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  margin-top: 1.25em;
+  margin-bottom: 0.75em;
+}
+
+.prose p {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  line-height: 1.6; /* Line height ko thoda badhayein */
+}
+
+.prose ul,
+.prose ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose strong {
+    color: inherit; /* Ensure bold text uses the parent's color */
+}
+
+
+
+
+/* ** Custom Scrollbar Styling ** */
+/* Firefox ke liye */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4f4f4f #1f2937; /* thumb and track color */
+}
+
+/* Chrome, Edge, Safari ke liye */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937; /* Track ka color (dark grey) */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #4f4f4f; /* Thumb ka color (lighter grey) */
+  border-radius: 10px;
+  border: 2px solid #1f2937; /* Track ke color ka border */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6f6f6f; /* Hover par thoda light */
+}
